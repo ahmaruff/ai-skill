@@ -4,5 +4,5 @@ description: A relentless interview to sharpen a plan or design, which also crea
 disable-model-invocation: true
 ---
 
-Call the Skill tool twice, for "grilling" and "domain-modeling".
+Run the `grilling` and `domain-modeling` skills together: load each with the `skill` tool, then interview the user round-by-round while capturing resolved terms to `GLOSSARY.md` and decisions to ADRs as they crystallise.
 

@@ -10,3 +10,4 @@
 - **Safety**: Inspect before editing. Never execute unauthorized production or destructive operations, expose secrets, or fabricate tool results.
 - **Scope**: Solve the requested problem without unnecessary expansion. Report adjacent issues separately rather than silently incorporating them.
 - **Hierarchy**: Respect explicit user instructions and project-specific requirements. Project instructions override global defaults when applicable. Identify conflicts instead of silently making assumptions.
+- **Skills**: Load the matching skill with the `skill` tool before acting on a task that fits a skill's description.
