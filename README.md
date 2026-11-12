@@ -1,58 +1,67 @@
 # AI Skill Repository
 
-This repository is a compact library of practical skills for working with AI as a technical partner. It is designed for software engineering tasks that require careful reasoning, investigation, design, and documentation.
+A compact library of reusable skills for working with AI as a technical partner. The agent investigates and writes code; **you review every diff line by line and commit manually.**
 
-The goal is simple: provide reusable prompts and guidance patterns that help an assistant think more like a strong engineering collaborator instead of a generic chatbot.
+The bias throughout: small, incremental changes; evidence over guesswork; explicit reasoning.
 
-## What is in here?
+## Skills
 
-The repo is organized under `core/` and contains a set of skills for common engineering workflows:
+### Think
 
-- `code-review` — review code critically and look for correctness, risk, and maintainability issues
-- `codebase-design` — reason about architecture, boundaries, and system structure
-- `diagnosing-bugs` — investigate failures systematically and narrow to root cause
-- `domain-modeling` — clarify business concepts, vocabulary, and domain boundaries
-- `grill-with-docs` — use documentation as a source of truth while challenging assumptions
-- `grilling` — pressure-test ideas, answers, and implementation decisions
-- `research` — gather and synthesize technical evidence before making decisions
-- `wait-what` — pause and re-evaluate assumptions when something seems off
+- `code-review` — review a diff on two axes: standards and spec
+- `codebase-design` — design deep modules, place seams, improve testability
+- `diagnosing-bugs` — build a red-capable loop, minimise, hypothesise, fix
+- `domain-modeling` — sharpen terms in `GLOSSARY.md`, record decisions as ADRs
+- `research` — gather evidence from primary sources into Markdown
+- `grilling` — stress-test a plan by interviewing the user
+- `grill-with-docs` — grilling + domain-modeling in one pass
+
+### Do
+
+- `explore` — map an unfamiliar codebase: entry points, data flow, conventions, gotchas
+- `implement` — pin the contract, test first, smallest change, verify, hand off the diff (includes refactoring)
+
+### Meta
+
+- `wait-what` — pause and re-pitch the last message in plain language (manual only)
+
+`/skills` routes a task to the right skill.
 
 ## Repo structure
 
 ```text
 core/
 ├── AGENTS.md
-└── skills/
-    ├── code-review/
-    ├── codebase-design/
-    ├── diagnosing-bugs/
-    ├── domain-modeling/
-    ├── grill-with-docs/
-    ├── grilling/
-    ├── research/
-    └── wait-what/
+├── skills/
+│   ├── code-review/
+│   ├── codebase-design/
+│   ├── diagnosing-bugs/
+│   ├── domain-modeling/
+│   ├── explore/
+│   ├── grill-with-docs/
+│   ├── grilling/
+│   ├── implement/
+│   ├── research/
+│   └── wait-what/
+└── command/          # thin slash-command wrappers that load a skill
 ```
 
-`core/AGENTS.md` provides the general operating guidance for how the assistant should behave: be critical, investigate before acting, prefer simple correct solutions, and verify claims.
+`core/AGENTS.md` is the shared operating guidance: be critical, investigate before acting, prefer simple correct solutions, verify claims.
 
-Each skill folder contains a focused playbook or template for a specific workflow, sometimes paired with supporting formats like ADRs, glossaries, and checklists.
+## Install / update
 
-## How to use this repo
+This repo lives on disk and is symlinked into opencode's global config. The sync script is idempotent and prunes links for deleted skills:
 
-1. Pick the skill that matches the task.
-2. Read the relevant `SKILL.md` or related format file.
-3. Apply the guidance to a prompt, architecture review, bug investigation, design discussion, or research task.
-4. Keep the engineering bias: challenge assumptions, verify evidence, and prefer clarity over complexity.
+```bash
+git clone git@github.com:ahmaruff/ai-skill.git ~/ai-skill
+~/ai-skill/bin/sync.sh          # create/refresh symlinks, prune stale ones
+~/ai-skill/bin/sync.sh --check  # report drift; exit non-zero if out of sync
+```
 
-## Why this exists
+It links `core/AGENTS.md`, every `core/skills/<name>/`, and every `core/command/*.md` into `~/.config/opencode/`. Set `OPENCODE_CONFIG_DIR` to target a different config directory. Restart opencode after syncing.
 
-This repo is meant to make AI assistance more useful in real engineering work. The emphasis is on:
+## How to use
 
-- correctness over speed
-- evidence over guesswork
-- simple, durable decisions over clever but fragile abstractions
-- explicit reasoning and clear communication
-
-## Notes
-
-This is a knowledge repository, not an application or service. It is best used as a reference set of reusable operating patterns for AI-assisted engineering work.
+1. Pick the skill that matches the task, or run `/skills` to have the assistant route it.
+2. Most skills are model-invocable from their `description`; slash commands are explicit entry points.
+3. Keep the engineering bias: challenge assumptions, verify evidence, prefer clarity over complexity.
